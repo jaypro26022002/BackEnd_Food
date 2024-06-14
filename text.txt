@@ -1,0 +1,9 @@
+"define": { (database.json)
+   "freezeTableName": true
+} :khi thêm bao nhiêu Model thì vẫn sẽ chạy ko cần thêm tay vào code cái Model khác
+
+npx sequelize-cli model:generate --name test --attributes firstName:string,lastName:string,email:string
+
+ "logging": false
+để hide đi kết quả SQL sau trên terminal
+Executing (default): INSERT INTO `User` (`id`,`email`,`password`,`username`,`createdAt`,`updatedAt`) VALUES (DEFAULT,?,?,?,?,?);
