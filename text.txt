@@ -7,3 +7,5 @@ npx sequelize-cli model:generate --name test --attributes firstName:string,lastN
  "logging": false
 để hide đi kết quả SQL sau trên terminal
 Executing (default): INSERT INTO `User` (`id`,`email`,`password`,`username`,`createdAt`,`updatedAt`) VALUES (DEFAULT,?,?,?,?,?);
+Executing (default): INSERT INTO `Product` (`id_product`,`nameProduct`,`thumbnail`,`pricedown`,`price`,`quantity`,`createdAt`,`updatedAt`) VALUES (DEFAULT,?,?,?,?,?);
+ 

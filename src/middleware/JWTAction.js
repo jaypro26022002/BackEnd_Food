@@ -2,14 +2,21 @@ require("dotenv").config();
 import jwt from "jsonwebtoken";
 
 // hàm bỏ qua cookie vẫn cho người dùng vào trang
-const nonSecurePaths = ['/', '/login', '/register'];
+// const nonSecurePaths = ['/', '/login', '/register', '/account',
+//      '/product/read1'];
+
+const nonSecurePaths = ['/logout', '/login', '/register',
+    '/product/read1', '/product/readcom', '/product/readkfc',
+];
 
 // createJWT gữi liệu kèm mã hóa nội dung đã gửi để bảo mật thông tin
 const createJWT = (payload) => {
     let key = process.env.JWT_SECRET;
     let token = null;
     try {
-        token = jwt.sign(payload, key)
+        token = jwt.sign(payload, key, {
+            expiresIn: process.env.JWT_EXPIRES_IN
+        });
     } catch (err) {
         console.log(err)
     }
@@ -62,7 +69,7 @@ const checkUserPermision = (req, res, next) => {
         let email = req.user.email;
         let roles = req.user.groupWithRoles.Roles;
         let currentUrl = req.path;
-        if (!roles || roles.length == 0) {
+        if (!roles || roles.length === 0) {
             return res.status(403).json({
                 EC: -1,
                 DT: '',

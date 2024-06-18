@@ -14,17 +14,23 @@ module.exports = {
       thumbnail: {
         type: Sequelize.STRING
       },
-      collection: {
-        type: Sequelize.STRING
-      },
       pricedown: {
         type: Sequelize.STRING
       },
       price: {
         type: Sequelize.STRING
       },
+      collection: {
+        type: Sequelize.INTEGER
+      },
       quantity: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
+      },
+      fastDelivery: {
+        type: Sequelize.BOOLEAN
+      },
+      ratings: {
+        type: Sequelize.INTEGER
       },
       id_type_product: {
         type: Sequelize.INTEGER

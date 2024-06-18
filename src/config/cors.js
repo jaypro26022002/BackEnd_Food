@@ -3,7 +3,7 @@ require("dotenv").config();
 const conFigCors = (app) => {
     // Add headers before the routes are defined
     app.use(function (req, res, next) {
-
+        // console.log(req.method)
         // Website you wish to allow to connect
         res.setHeader('Access-Control-Allow-Origin', process.env.REACT_URL);
 
@@ -17,6 +17,9 @@ const conFigCors = (app) => {
         // to the API (e.g. in case you use sessions)
         res.setHeader('Access-Control-Allow-Credentials', true);
 
+        if (req.method === 'OPTIONS') {
+            return res.sendStatus(200);
+        }
         // Pass to next layer of middleware
         next();
     });

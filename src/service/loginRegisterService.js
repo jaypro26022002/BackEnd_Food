@@ -101,7 +101,6 @@ const handleUserLogin = async (rawData) => {
                     email: user.email,
                     groupWithRoles,
                     username: user.username,
-                    expiresIn: process.env.JWT_EXPIRES_IN
                 }
                 let token = createJWT(payload)
                 return {
@@ -116,7 +115,7 @@ const handleUserLogin = async (rawData) => {
                 }
             }
         }
-        console.log(">> Input user with email/phone ", rawData.valueLogin, "password: ", rawData.password)
+        // console.log(">> Input user with email/phone ", rawData.valueLogin, "password: ", rawData.password)
         return {
             EM: 'Your email/phone or password iscorrect',// error messeger
             EC: 1, // error code

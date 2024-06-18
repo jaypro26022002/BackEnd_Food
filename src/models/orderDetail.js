@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // 1 shop co nhieu san pham,foreign key Product
-            OrderDetail.hasMany(models.Product)
+            // OrderDetail.hasMany(models.Product)
         }
     };
     OrderDetail.init({

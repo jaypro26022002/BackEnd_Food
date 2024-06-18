@@ -42,45 +42,33 @@ const initApiRoutes = (app) => {
     router.get("/getimg", homeController.getUploadFilePage)
     router.post('/upload-image', upload.single('image'), homeController.handleUploadFile)
 
+    // display
 
-    //     return app.use("/api/v1", router)
-    // }
-
-    // export default initApiRoutes;
-
-    // import express from "express";
-    // import apiController from "../controller/apiController"
-    // import userController from "../controller/userController"
-    // import groupController from '../controller/groupController';
-    // import dishesController from '../controller/dishesController';
-    // import OtherController from '../controller/OtherController';
-    // // import homeController from '../controller/homeController';
-    // const router = express.Router();
-
-    // /** expres app */
-
-    // const initApiRoutes = (app) => {
-    //     //rest api
-    //     //GET,POST,PU,DELETE
+    router.get('/product/readsushi', displayController.getfunProductsushi);
+    router.get('/product/readbun', displayController.getfunProductbun);
+    router.get('/product/readsang', displayController.getfunProductsang);
+    router.get('/product/readtrua', displayController.getfunProducttrua);
+    router.get('/product/readtoi', displayController.getfunProducttoi);
 
     // router.all : sẽ check user quyền các role(/user/read, /group/read, ...)-> so sánh url trên Database mới cho chạy đống code dưới
     // qua 2 midleware(checkUserJWT, checkUserPermision)
-    // router.all('*', checkUserJWT, checkUserPermision)
+    router.all('*', checkUserJWT, checkUserPermision)
     router.post('/register', apiController.handleRegister);
     router.post('/login', apiController.handleLogin);
-    // router.get('/account', userController.getUserAccount);
+    router.post('/logout', apiController.handleLogout);
+
+    router.get('/account', userController.getUserAccount);
+
+    router.get('/product/read1', displayController.getfuncProduct1);
+    router.get('/product/readcom', displayController.getfunProductcom);
+    router.get('/product/readkfc', displayController.getfunProductkfc);
 
     router.get('/user/read', userController.readFunc);
-    // router.get('/user/read', userController.readFunc);
     router.post('/user/create', userController.createFunc);
     router.put('/user/update', userController.updateFunc);
     router.delete('/user/delete', userController.deleteFunc);
 
     router.get('/group/read', groupController.readFunc);
-
-    // router.get('/product/read', dishesController.readFuncProduct);
-    // router.post('/product/create', dishesController.createFuncProduct);
-    // router.put('/product/update', dishesController.updateFuncProduct);
 
     router.get('/product/read', dishesController.readFuncProduct);
     router.post('/product/create', upload.single('image'), dishesController.createFuncProduct);
@@ -105,14 +93,13 @@ const initApiRoutes = (app) => {
     // router.put('/shop/update', OtherController.updateFuncShop);
     // router.delete('/shop/delete', userController.deleteFuncShop);
 
-    // router.post('/food/create', dishesController.upload.single('avatar'), dishesController.createFuncFood);
 
     // test upload file
     // router.get("/upload", homeController.getUploadFilePage)
     // router.post('/upload-profile-pic', upload.single('profile_pic'), homeController.handleUploadFile)
 
-    // display
-    router.get('/product/read1', displayController.getProduct1);
+
+
 
     return app.use("/api/v1", router)
 }
