@@ -3,7 +3,7 @@ import db from "../models";
 const getProduct = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             raw: true,
         });
         return {

@@ -10,7 +10,8 @@ const getProductwithPagination = async (page, limit) => {
             offset: offset,
             limit: limit,
             // sort: '' hàm sort kiếm theo ý muốn(id,name,..) tìm hiểu thêm 
-            attributes: ["id_product", "nameProduct", 'thumbnail', "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", 'thumbnail', "pricedown", "price", "quantity",
+                "collection", "fastDelivery", "ratings", "id_type_product"],
             order: [['id_product', 'DESC']]
         })
 
@@ -46,11 +47,15 @@ const createNewProduct = async (data) => {
             pricedown: data.pricedown,
             price: data.price,
             quantity: data.quantity,
+            collection: data.collection,
+            fastDelivery: data.fastDelivery,
+            id_type_product: data.id_type_product,
+            ratings: data.ratings
         });
         return {
             EM: 'Create product ok',
             EC: 0,
-            DT: []
+            DT: data
         };
     } catch (e) {
         console.error(e);  // Log the error for debugging
@@ -60,6 +65,7 @@ const createNewProduct = async (data) => {
             DT: []
         };
     }
+
 };
 
 const updateProduct = async (data) => {
@@ -72,14 +78,19 @@ const updateProduct = async (data) => {
 
         if (product) {
             // Update product details
-            await product.update({
-                nameProduct: data.nameProduct,
-                thumbnail: data.thumbnail,
-                pricedown: data.pricedown,
-                price: data.price,
-                id_type_product: data.id_type_product,
-                quantity: data.quantity,
-            });
+            product.nameProduct = data.nameProduct;
+            product.thumbnail = data.thumbnail;
+            product.pricedown = data.pricedown;
+            product.price = data.price;
+            product.id_type_product = data.id_type_product;
+            product.quantity = data.quantity;
+            product.collection = data.collection;
+            product.ratings = data.ratings;
+            product.id_type_product = data.id_type_product;
+            product.fastDelivery = data.fastDelivery;
+
+            await product.save();
+
             return {
                 EM: 'update product success',
                 EC: 0,
@@ -102,30 +113,28 @@ const updateProduct = async (data) => {
     }
 };
 
-
-
-// const deleteUser = async (id) => {
-//     try {
-//         let user = await db.User.findOne({
-//             where: { id: id }
-//         })
-//         if (user) {
-//             await user.destroy();
-//             return {
-//                 EM: 'Delete successful',
-//                 EC: 0,
-//                 DT: []
-//             }
-//         }
-//     } catch (e) {
-//         console.log(e);
-//         return {
-//             EM: 'something wrong with server',
-//             EC: 1,
-//             DT: []
-//         }
-//     }
-// }
+const deleteProduct = async (id) => {
+    try {
+        let user = await db.User.findOne({
+            where: { id: id }
+        })
+        if (user) {
+            await user.destroy();
+            return {
+                EM: 'Delete successful',
+                EC: 0,
+                DT: []
+            }
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
 
 const getTypewithPagination = async (page, limit) => {
     try {
@@ -248,8 +257,11 @@ const updateType = async (data) => {
 //     }
 // }
 
+// ordersService.js
+
+
 
 module.exports = {
-    getProductwithPagination, createNewProduct, updateProduct,
-    getTypewithPagination, createNewType, updateType
+    getProductwithPagination, createNewProduct, updateProduct, deleteProduct,
+    getTypewithPagination, createNewType, updateType,
 }

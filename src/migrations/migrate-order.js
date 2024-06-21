@@ -8,8 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      total: {
+        type: Sequelize.INTEGER
+      },
       id_orderdetail: {
         type: Sequelize.INTEGER
+      },
+      paymentMethod: {
+        type: Sequelize.STRING
       },
       id_user: {
         type: Sequelize.INTEGER

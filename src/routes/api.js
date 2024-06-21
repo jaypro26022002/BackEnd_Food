@@ -6,6 +6,7 @@ import OtherController from '../controller/OtherController';
 import express from "express";
 import homeController from '../controller/homeController';
 import displayController from '../controller/displayController';
+import orderController from '../controller/orderController';
 import multer from "multer";
 import path from "path";
 import { checkUserJWT, checkUserPermision } from '../middleware/JWTAction';
@@ -73,6 +74,7 @@ const initApiRoutes = (app) => {
     router.get('/product/read', dishesController.readFuncProduct);
     router.post('/product/create', upload.single('image'), dishesController.createFuncProduct);
     router.put('/product/update', upload.single('image'), dishesController.updateFuncProduct);
+    router.delete('/user/delete', dishesController.deleteFuncProduct);
 
     router.get("/getimg", homeController.getUploadFilePage)
     router.post('/upload-image', upload.single('image'), homeController.handleUploadFile)
@@ -98,6 +100,8 @@ const initApiRoutes = (app) => {
     // router.get("/upload", homeController.getUploadFilePage)
     // router.post('/upload-profile-pic', upload.single('profile_pic'), homeController.handleUploadFile)
 
+    router.post('/orders', orderController.createFuncOrder);
+    router.post('/momo/payment', orderController.createMoMoPayment);
 
 
 

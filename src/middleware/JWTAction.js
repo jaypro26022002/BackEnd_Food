@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 //      '/product/read1'];
 
 const nonSecurePaths = ['/logout', '/login', '/register',
+    '/cart', '/carts',
     '/product/read1', '/product/readcom', '/product/readkfc',
 ];
 
