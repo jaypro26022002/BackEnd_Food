@@ -53,7 +53,7 @@ const initApiRoutes = (app) => {
 
     // router.all : sẽ check user quyền các role(/user/read, /group/read, ...)-> so sánh url trên Database mới cho chạy đống code dưới
     // qua 2 midleware(checkUserJWT, checkUserPermision)
-    router.all('*', checkUserJWT, checkUserPermision)
+    // router.all('*', checkUserJWT, checkUserPermision)
     router.post('/register', apiController.handleRegister);
     router.post('/login', apiController.handleLogin);
     router.post('/logout', apiController.handleLogout);
@@ -102,6 +102,12 @@ const initApiRoutes = (app) => {
 
     router.post('/orders', orderController.createFuncOrder);
     router.post('/momo/payment', orderController.createMoMoPayment);
+    router.post('/callback', async (req, res) => {
+        console.log("callback: ");
+        console.log(req.body);
+
+        return res.status(200).json(req.body)
+    })
 
 
 
