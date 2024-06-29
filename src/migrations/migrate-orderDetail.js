@@ -17,6 +17,9 @@ module.exports = {
       id_ship: {
         type: Sequelize.INTEGER
       },
+      district: {
+        type: Sequelize.STRING
+      },
       price: {
         type: Sequelize.INTEGER
       },

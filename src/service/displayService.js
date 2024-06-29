@@ -24,7 +24,7 @@ const getProduct = async () => {
 const getProductkfc = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 id_type_product: 2
             },
@@ -47,7 +47,7 @@ const getProductkfc = async () => {
 const getProductcom = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 id_type_product: 1
             },
@@ -70,7 +70,7 @@ const getProductcom = async () => {
 const getProductsushi = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 id_type_product: 3
             },
@@ -93,7 +93,7 @@ const getProductsushi = async () => {
 const getProductbun = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 id_type_product: 4
             },
@@ -116,7 +116,7 @@ const getProductbun = async () => {
 const getProductsang = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 collection: 1
             },
@@ -139,7 +139,7 @@ const getProductsang = async () => {
 const getProducttrua = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 collection: 2
             },
@@ -162,7 +162,7 @@ const getProducttrua = async () => {
 const getProducttoi = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
             where: {
                 collection: 3
             },

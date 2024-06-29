@@ -9,16 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       total: {
-        type: Sequelize.INTEGER
-      },
-      id_orderdetail: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DECIMAL(10, 3) // Đảm bảo hỗ trợ số thập phân
       },
       paymentMethod: {
         type: Sequelize.STRING
       },
-      id_user: {
+      username: {
+        type: Sequelize.STRING
+      },
+      email: {
+        type: Sequelize.STRING
+      },
+      phone: {
         type: Sequelize.INTEGER
+      },
+      status: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

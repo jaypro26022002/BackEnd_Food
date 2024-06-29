@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // 1 shop co nhieu san pham,foreign key Product
             // OrderDetail.hasMany(models.Product)
+            OrderDetail.belongsTo(models.Order, { foreignKey: 'id_order' });
         }
     };
     OrderDetail.init({
@@ -23,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_order: DataTypes.INTEGER,
         id_product: DataTypes.INTEGER,
-        id_cartdetail: DataTypes.INTEGER,
+        district: DataTypes.STRING,
+        id_ship: DataTypes.INTEGER,
         price: DataTypes.INTEGER,
         quantity: DataTypes.INTEGER
     }, {

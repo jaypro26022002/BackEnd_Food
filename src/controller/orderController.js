@@ -1,10 +1,10 @@
 import ordersService from '../service/orderApiService';
-import momoService from '../service/momoApiService';
+import momoService from '../service/MomoApiService';
 
 const createFuncOrder = async (req, res) => {
     try {
-        const { items, total, paymentMethod } = req.body;
-        let data = await ordersService.createOrder({ items, total, paymentMethod });
+        const { items, total, paymentMethod, username, email, phone, district } = req.body;
+        let data = await ordersService.createOrder({ items, total, paymentMethod, username, email, phone, district });
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,
@@ -30,7 +30,7 @@ const createMoMoPayment = async (req, res) => {
 
         const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-        console.log("check totall", total)
+        // console.log("check totall", total)
         if (isNaN(total)) {
             return res.status(400).json({ error: 'Invalid total amount' });
         }

@@ -102,16 +102,74 @@ const initApiRoutes = (app) => {
 
     router.post('/orders', orderController.createFuncOrder);
     router.post('/momo/payment', orderController.createMoMoPayment);
-    router.post('/callback', async (req, res) => {
-        console.log("callback: ");
-        console.log(req.body);
 
-        return res.status(200).json(req.body)
-    })
+    app.post('/callback', async (req, res) => {
+        try {
+            console.log("Received callback request:");
+            console.log(req.body); // Logging the request body
 
+            // Call the corresponding controller function to handle MoMo payment logic
+            await orderController.createMoMoPayment(req, res);
 
+        } catch (error) {
+            console.error("Error in POST /callback:", error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    router.post('/check-status-transaction', async (req, res) => {
+        try {
+            const { orderId } = req.body;
+
+            // Calculate signature
+            const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
+            const accessKey = 'F8BBA842ECF85';
+            const rawSignature = `accessKey=${accessKey}&orderId=${orderId}&partnerCode=MOMO&requestId=${orderId}`;
+
+            const signature = crypto
+                .createHmac('sha256', secretKey)
+                .update(rawSignature)
+                .digest('hex');
+
+            // Prepare request body
+            const requestBody = JSON.stringify({
+                partnerCode: 'MOMO',
+                requestId: orderId,
+                orderId: orderId,
+                signature: signature,
+                lang: 'vi',
+            });
+
+            // Setup axios options for POST request
+            const options = {
+                method: 'POST',
+                url: 'https://test-payment.momo.vn/v2/gateway/api/query',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: requestBody,
+            };
+
+            // Send POST request to MoMo API
+            const response = await axios(options);
+
+            // Return MoMo API response to client
+            res.status(200).json(response.data);
+        } catch (error) {
+            console.error('Error checking transaction status:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
 
     return app.use("/api/v1", router)
 }
 
 export default initApiRoutes;
+
+
+// router.post('/callback', async (req, res) => {
+//     console.log("callback: ");
+//     console.log(req.body);
+
+//     return res.status(200).json(req.body)
+// })

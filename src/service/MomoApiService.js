@@ -5,8 +5,8 @@ const partnerCode = 'MOMO';
 const accessKey = 'F8BBA842ECF85';
 const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
 
-const redirectUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
-const ipnUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
+const redirectUrl = 'http://localhost:3000/';
+const ipnUrl = 'https://7714-2405-4803-c800-dbb0-4122-ae19-a56-be07.ngrok-free.app/callback';
 const requestType = "payWithATM"; // Ensure this matches the expected value by MoMo
 
 const createPayment = ({ items, total, paymentMethod }) => {
@@ -65,7 +65,7 @@ const createPayment = ({ items, total, paymentMethod }) => {
             res.on('end', () => {
                 try {
                     const response = JSON.parse(body);
-                    console.log('MoMo Response:', response);
+                    // console.log('MoMo Response:', response);
                     if (response.resultCode === 0) {
                         resolve({ payUrl: response.payUrl });
                     } else {

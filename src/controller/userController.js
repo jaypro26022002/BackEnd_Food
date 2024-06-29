@@ -91,6 +91,7 @@ const getUserAccount = async (req, res) => {
             groupWithRoles: req.user.groupWithRoles,
             email: req.user.email,
             username: req.user.username,
+            phone: req.user.phone,
             groupId: req.user.groupId // Make sure this is added and available
         }
     })

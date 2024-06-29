@@ -30,6 +30,8 @@ app.use(cookieParser());
 //test connection
 connection();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //init web routes
 initWebRoutes(app);
 

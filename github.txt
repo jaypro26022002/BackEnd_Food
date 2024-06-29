@@ -1,0 +1,6 @@
+git config --global user.email "vinh26022002@gmail.com"
+git config --global user.name "jaypro26022002"
+git init
+git add .
+git commit -m 'noidung'
+git push origin main/main

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // 1 shop co nhieu san pham,foreign key Product
             // Order.hasMany(models.User, { foreignKey: 'id_user' })
-            Order.hasMany(models.OrderItem, { foreignKey: 'id_order' });
+            Order.hasMany(models.OrderDetail, { foreignKey: 'id_order' });
         }
     };
     Order.init({
@@ -22,7 +22,12 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        id_user: DataTypes.INTEGER,
+        total: DataTypes.DECIMAL,
+        paymentMethod: DataTypes.STRING,
+        email: DataTypes.STRING,
+        username: DataTypes.STRING,
+        phone: DataTypes.INTEGER,
+        status: DataTypes.STRING,
     }, {
         sequelize,
         modelName: 'Order',
