@@ -70,7 +70,7 @@ const createNewProduct = async (data) => {
 
 const updateProduct = async (data) => {
     try {
-        console.log('Received data:', data); // Log the input data for debugging
+        // console.log('Received data:', data); // Log the input data for debugging
 
         let product = await db.Product.findOne({
             where: { id_product: data.id_product }

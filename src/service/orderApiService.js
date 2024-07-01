@@ -55,10 +55,6 @@ const createOrder = async ({ items, total, paymentMethod, username, email, phone
         };
     }
 };
-
-
-
-
 module.exports = {
     createOrder
 };

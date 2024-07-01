@@ -1,5 +1,120 @@
 import db from "../models"
 
+const getShopWeb = async () => {
+    try {
+        let data = await db.Shop.findAll({
+            attributes: ["id_shop", "thumbnail", "nameShop", 'address', "timeWork", 'price', "rating"],
+            where: {
+                id_shop: 2
+            },
+            raw: true,
+        });
+        return {
+            EM: 'fetch shop ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+const getShopWeb2 = async () => {
+    try {
+        let data = await db.Shop.findAll({
+            attributes: ["id_shop", "thumbnail", "nameShop", 'address', "timeWork", 'price', "rating"],
+            where: {
+                id_shop: 1
+            },
+            raw: true,
+        });
+        return {
+            EM: 'fetch shop ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+const getShopWeb3 = async () => {
+    try {
+        let data = await db.Shop.findAll({
+            attributes: ["id_shop", "thumbnail", "nameShop", 'address', "timeWork", 'price', "rating"],
+            where: {
+                id_shop: 3
+            },
+            raw: true,
+        });
+        return {
+            EM: 'fetch shop ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+const getShopWeb4 = async () => {
+    try {
+        let data = await db.Shop.findAll({
+            attributes: ["id_shop", "thumbnail", "nameShop", 'address', "timeWork", 'price', "rating"],
+            where: {
+                id_shop: 4
+            },
+            raw: true,
+        });
+        return {
+            EM: 'fetch shop ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
+
+const getContact = async () => {
+    try {
+        let data = await db.Contact.findAll({
+            attributes: ["id_contact", "nameUser", "description"],
+            raw: true,
+        });
+        return {
+            EM: 'fetch contact ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
 const createNewContact = async (data) => {
     try {
         // create new user
@@ -7,7 +122,7 @@ const createNewContact = async (data) => {
             nameUser: data.nameUser,
             description: data.description
         })
-        console.log(">> check dataOther: ", data)
+        // console.log(">> check dataOther: ", data)
         return {
             EM: 'Create contact ok',
             EC: 0,
@@ -155,7 +270,7 @@ const getShopwithPagination = async (page, limit) => {
         const { count, rows } = await db.Shop.findAndCountAll({
             offset: offset,
             limit: limit,
-            attributes: ["id_shop", "nameShop", 'address', "timeWork"],
+            attributes: ["id_shop", "thumbnail", "nameShop", 'address', "timeWork", "rating", "price"],
             include: {
                 model: db.TypeProduct,
                 attributes: ["nameType", "id_type_product"]
@@ -191,6 +306,7 @@ const createNewShop = async (data) => {
             address: data.address,
             timeWork: data.timeWork,
             rating: data.rating,
+            price: data.price,
             id_type_product: data.id_type_product,
         });
         console.log()
@@ -210,49 +326,71 @@ const createNewShop = async (data) => {
 };
 const updateShop = async (data) => {
     try {
-        // if (!data.groupId) {
-        //     return {
-        //         EM: 'error with empty groupId',
-        //         EC: 1,
-        //         DT: 'group'
-        //     }
-        // }
         let shop = await db.Shop.findOne({
             where: { id_shop: data.id_shop }
-        })
+        });
+
         if (shop) {
-            //update
-            await shop.update({
-                nameShop: data.nameShop,
-                address: data.address,
-                timeWork: data.timeWork,
-                id_img: data.id_img,
-                id_type_product: data.id_type_product
-            })
+            // Update shop
+            shop.nameShop = data.nameShop;
+            shop.thumbnail = data.thumbnail;
+            shop.address = data.address;
+            shop.timeWork = data.timeWork;
+            shop.rating = data.rating;
+            shop.price = data.price;
+            shop.id_type_product = data.id_type_product;
+
+            await shop.save();
+
             return {
-                EM: 'update shop success ',
+                EM: 'update shop success',
                 EC: 0,
                 DT: ''
-            }
+            };
         } else {
-            //not found
+            // Shop not found
             return {
                 EM: 'shop not found',
                 EC: 2,
                 DT: '',
+            };
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server OtherService',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+const deleteShop = async (id_shop) => {
+    try {
+        let user = await db.Shop.findOne({
+            where: { id_shop: id_shop }
+        })
+        if (user) {
+            await user.destroy();
+            return {
+                EM: 'Delete successful',
+                EC: 0,
+                DT: []
             }
         }
     } catch (e) {
         console.log(e);
         return {
-            EM: 'something wrong with server Otherservice',
+            EM: 'something wrong with server',
             EC: 1,
             DT: []
         }
     }
 }
+
+
 module.exports = {
     getNewwithPagination, createNewnew, updateNew,
-    getShopwithPagination, createNewShop, updateShop,
-    createNewContact
+    getShopwithPagination, createNewShop, updateShop, deleteShop,
+    createNewContact, getContact,
+    getShopWeb, getShopWeb2, getShopWeb3, getShopWeb4,
 }

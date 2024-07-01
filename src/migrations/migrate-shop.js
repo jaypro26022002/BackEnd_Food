@@ -23,6 +23,9 @@ module.exports = {
       rating: {
         type: Sequelize.INTEGER
       },
+      price: {
+        type: Sequelize.STRING
+      },
       id_type_product: {
         type: Sequelize.INTEGER
       },

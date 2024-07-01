@@ -50,10 +50,12 @@ const initApiRoutes = (app) => {
     router.get('/product/readsang', displayController.getfunProductsang);
     router.get('/product/readtrua', displayController.getfunProducttrua);
     router.get('/product/readtoi', displayController.getfunProducttoi);
+    router.post('/contact', OtherController.handleContact);
+
 
     // router.all : sẽ check user quyền các role(/user/read, /group/read, ...)-> so sánh url trên Database mới cho chạy đống code dưới
     // qua 2 midleware(checkUserJWT, checkUserPermision)
-    // router.all('*', checkUserJWT, checkUserPermision)
+    router.all('*', checkUserJWT, checkUserPermision)
     router.post('/register', apiController.handleRegister);
     router.post('/login', apiController.handleLogin);
     router.post('/logout', apiController.handleLogout);
@@ -87,13 +89,18 @@ const initApiRoutes = (app) => {
     // router.post('/new/create', OtherController.createFuncNew);
     // router.put('/new/update', OtherController.updateFuncNew);
 
-    // router.post('/contact', OtherController.handleContact);
+    router.get('/feedback/readContact', OtherController.readFuncContact);
+    router.get('/shop/readShop', OtherController.readFuncShopWeb);
+    router.get('/shop/readShop2', OtherController.readFuncShopWeb2);
+    router.get('/shop/readShop3', OtherController.readFuncShopWeb3);
+    router.get('/shop/readShop4', OtherController.readFuncShopWeb4);
 
-    // router.get('/shop/read', OtherController.readFuncShop);
+
+    router.get('/shop/read', OtherController.readFuncShop);
     // router.get('/type1/read', groupController.readFuncT);
     router.post('/shop/create', upload.single('image'), OtherController.createFuncShop);
-    // router.put('/shop/update', OtherController.updateFuncShop);
-    // router.delete('/shop/delete', userController.deleteFuncShop);
+    router.put('/shop/update', upload.single('image'), OtherController.updateFuncShop);
+    router.delete('/shop/delete', OtherController.deleteFuncShop);
 
 
     // test upload file
