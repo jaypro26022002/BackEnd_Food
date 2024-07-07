@@ -48,7 +48,7 @@ const updateFunc = async (req, res) => {
     try {
         //validate
         let data = await userApiService.updataUser(req.body);
-        console.log('control data', data)
+        // console.log('control data', data)
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC, // error code

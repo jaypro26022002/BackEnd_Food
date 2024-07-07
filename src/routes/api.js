@@ -4,11 +4,20 @@ import groupController from '../controller/groupController';
 import dishesController from '../controller/dishesController';
 import OtherController from '../controller/OtherController';
 import express from "express";
+
+const app = express();
+app.use(express.json());
+
 import homeController from '../controller/homeController';
 import displayController from '../controller/displayController';
 import orderController from '../controller/orderController';
+// import createOrderController from '../controller/createOrderController';
 import multer from "multer";
 import path from "path";
+
+import db from "../models";
+
+// const { inspect } = require('util');
 import { checkUserJWT, checkUserPermision } from '../middleware/JWTAction';
 
 var appRoot = require("app-root-path");
@@ -37,6 +46,7 @@ let upload = multer({ storage: storage, fileFilter: imageFilter });
 
 
 const initApiRoutes = (app) => {
+
     //rest api 
     //GET,POST,PU,DELETE
     // test upload file
@@ -70,6 +80,10 @@ const initApiRoutes = (app) => {
     router.post('/user/create', userController.createFunc);
     router.put('/user/update', userController.updateFunc);
     router.delete('/user/delete', userController.deleteFunc);
+
+    router.get('/adminorder/read', displayController.readFuncCheckOrder);
+    router.get('/adminorderdetail/read', displayController.readOrderDetailsByOrderId);
+
 
     router.get('/group/read', groupController.readFunc);
 
@@ -107,22 +121,128 @@ const initApiRoutes = (app) => {
     // router.get("/upload", homeController.getUploadFilePage)
     // router.post('/upload-profile-pic', upload.single('profile_pic'), homeController.handleUploadFile)
 
+    // router.post('/orders', createOrderController.createFuncOrderDetail);
+    // router.post('/momo/payment', createOrderController.createMoMoPayment);
+
     router.post('/orders', orderController.createFuncOrder);
     router.post('/momo/payment', orderController.createMoMoPayment);
 
+    // app.post('/callback', orderController.createFuncUpdateOrder);
+
+
+
+    // app.post('/callback', async (req, res) => {
+    //     try {
+    //         console.log("Callback request body:", req.body);
+
+    //         // Call createFuncUpdateOrder from orderController
+    //         let datacallback = await orderController.createFuncUpdateOrder(req, res);
+
+    //         // Respond with success status and data from createFuncUpdateOrder
+    //         res.status(200).json({
+    //             message: 'Callback processed successfully',
+    //             data: datacallback
+    //         });
+    //     } catch (error) {
+    //         console.error('Error processing callback:', error);
+    //         res.status(500).send('Internal Server Error');
+    //     }
+    // });
+
+
     app.post('/callback', async (req, res) => {
         try {
-            console.log("Received callback request:");
-            console.log(req.body); // Logging the request body
+            console.log("Callback request body:", req.body);
+            let data = req.body; // Assuming MoMo sends data as part of request body
+            console.log('MoMo callback data:', data);
 
-            // Call the corresponding controller function to handle MoMo payment logic
-            await orderController.createMoMoPayment(req, res);
+            // Find order in database based on orderId from MoMo
+            const order = await db.Order.findOne({
+                where: { orderId: data.orderId }
+            });
 
-        } catch (error) {
-            console.error("Error in POST /callback:", error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            if (order) {
+                // Update order and order details based on resultCode condition
+                if (data.resultCode === 0) {
+                    order.status = 'Đã thanh toán'; // Update status to 'Đã thanh toán' if resultCode is 0
+                    await db.OrderDetail.update(
+                        { status: 'Đã thanh toán' },
+                        { where: { id_order: order.id_order } }
+                    );
+                } else {
+                    order.status = 'Chưa thanh toán'; // Update status to 'Chưa thanh toán' otherwise
+                    await db.OrderDetail.update(
+                        { status: 'Chưa thanh toán' },
+                        { where: { id_order: order.id_order } }
+                    );
+                }
+
+                await order.save();
+
+                res.json({
+                    EM: 'Update Order success',
+                    EC: 0,
+                    DT: ''
+                });
+            } else {
+                res.status(404).json({
+                    EM: 'Order not found',
+                    EC: 2,
+                    DT: ''
+                });
+            }
+        } catch (e) {
+            console.error("Error in updateOrder:", e);
+            res.status(500).json({
+                EM: 'Something went wrong with the server',
+                EC: 1,
+                DT: []
+            });
         }
     });
+
+
+    // app.post('/callback', async (req, res) => {
+    //     try {
+    //         console.log("Callback request body:", req.body);
+    //         let data = req.body; // Assuming MoMo sends data as part of request body
+    //         console.log('MoMo callback data:', data);
+
+    //         // Find order in database based on orderId from MoMo
+    //         const updateOrder = await db.Order.findOne({
+    //             where: { orderId: data.orderId }
+    //         });
+
+    //         if (updateOrder) {
+    //             // Update product details based on resultCode condition
+    //             if (data.resultCode === 0) {
+    //                 updateOrder.status = 'Đã thanh toán'; // Update status to 'Đã thanh toán' if resultCode is 0
+    //             }
+    //             // Else condition: If resultCode !== 0, keep the existing status and orderId
+
+    //             await updateOrder.save();
+
+    //             res.json({
+    //                 EM: 'Update Order success',
+    //                 EC: 0,
+    //                 DT: ''
+    //             });
+    //         } else {
+    //             res.status(404).json({
+    //                 EM: 'Order not found',
+    //                 EC: 2,
+    //                 DT: ''
+    //             });
+    //         }
+    //     } catch (e) {
+    //         console.error("Error in updateOrder:", e);
+    //         res.status(500).json({
+    //             EM: 'Something went wrong with the server',
+    //             EC: 1,
+    //             DT: []
+    //         });
+    //     }
+    // });
 
     router.post('/check-status-transaction', async (req, res) => {
         try {

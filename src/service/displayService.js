@@ -1,4 +1,70 @@
 import db from "../models";
+// Op là một object chứa các toán tử so sánh như Op.in, Op.eq, Op.gt,... để bạn có thể sử dụng trong các truy vấn Sequelize.
+const { Op } = require('sequelize');
+
+const getOrderDetailsByOrderId = async (orderId) => {
+    try {
+        let data = await db.OrderDetail.findAll({
+            where: { id_order: orderId },
+            attributes: ["id_orderdetail", "id_order", "nameProduct", "district", "price", "quantity", "status", "createdAt"],
+            order: [['id_orderdetail', 'DESC']]
+        });
+        return {
+            EM: 'fetch order details ok',
+            EC: 0,
+            DT: data
+        };
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+
+
+const getCheckOrderwithPagination = async (page, limit) => {
+    try {
+        let offset = (page - 1) * limit;
+
+        const { count, rows } = await db.Order.findAndCountAll({
+            where: {
+                status: {
+                    [Op.in]: ['Đã thanh toán', 'Chưa thanh toán']
+                }
+            },
+            offset: offset,
+            limit: limit,
+            attributes: ["id_order", "total", 'paymentMethod', "username", "email", "phone",
+                "status", "orderId", "createdAt"],
+            order: [['id_order', 'DESC']]
+        });
+
+        let totalPages = Math.ceil(count / limit);
+        let data = {
+            totalRows: count,
+            totalPages: totalPages,
+            checkorder: rows
+        };
+
+        return {
+            EM: 'fetch checkorder ok',
+            EC: 0,
+            DT: data
+        };
+
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+
 
 const getProduct = async () => {
     try {
@@ -186,6 +252,7 @@ const getProducttoi = async () => {
 
 module.exports = {
     getProduct, getProductkfc, getProductcom, getProductsushi, getProductbun,
-    getProductsang, getProducttrua, getProducttoi
+    getProductsang, getProducttrua, getProducttoi,
+    getCheckOrderwithPagination, getOrderDetailsByOrderId
 
 }

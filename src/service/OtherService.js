@@ -309,7 +309,7 @@ const createNewShop = async (data) => {
             price: data.price,
             id_type_product: data.id_type_product,
         });
-        console.log()
+        // console.log()
         return {
             EM: 'Create shop ok',
             EC: 0,

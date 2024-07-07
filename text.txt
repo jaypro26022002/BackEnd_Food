@@ -9,3 +9,21 @@ npx sequelize-cli model:generate --name test --attributes firstName:string,lastN
 Executing (default): INSERT INTO `User` (`id`,`email`,`password`,`username`,`createdAt`,`updatedAt`) VALUES (DEFAULT,?,?,?,?,?);
 Executing (default): INSERT INTO `Product` (`id_product`,`nameProduct`,`thumbnail`,`pricedown`,`price`,`quantity`,`createdAt`,`updatedAt`) VALUES (DEFAULT,?,?,?,?,?);
  
+ cai` thư viện cho Nodejs
+ + npm install util(để conver đoạn link thành json)
+
+
+ kiểm tra văn phạm word
+ ghi nội dung word quy định hơn nửa trang ko để trống nữa trang
+
+ bảng theo dõi in riêng 
+
+6,7,8,9 : sửa status và làm thông kê
+ 10,11 bắt đầu word
+
+12: nộp cô coi
+ 13:nộp word cô kèm 
+
+ 15: đi in 
+
+ 

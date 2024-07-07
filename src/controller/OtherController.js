@@ -273,7 +273,7 @@ const updateFuncShop = async (req, res) => {
             address: req.body.address,
         }
         let response = await OtherService.updateShop(data); // Ensure req.body.id_shop is correctly set
-        console.log('control data Shop', data)
+        // console.log('control data Shop', data)
         return res.status(200).json({
             EM: response.EM,
             EC: response.EC, // error code

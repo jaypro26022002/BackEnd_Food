@@ -24,7 +24,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+      },
+      orderId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'Pending Payment'
       },
       createdAt: {
         allowNull: false,

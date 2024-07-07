@@ -16,7 +16,7 @@ const readFuncProduct = async (req, res) => {
                 DT: data.DT, //datas
             })
         }
-        console.log("check data readproduct", data)
+        // console.log("check data readproduct", data)
     } catch (e) {
         console.log(e);
         return res(500).json({
@@ -56,7 +56,7 @@ const createFuncProduct = async (req, res) => {
             ratings,
             id_type_product
         });
-        console.log('Received data:', data); // Log the input data for debugging
+        // console.log('Received data:', data); // Log the input data for debugging
 
         return res.status(200).json({
             EM: data.EM,
@@ -90,7 +90,7 @@ const updateFuncProduct = async (req, res) => {
             thumbnail: req.file ? req.file.filename : req.body.thumbnail,
         };
 
-        console.log('Received data:', data); // Log the input data for debugging
+        // console.log('Received data:', data); // Log the input data for debugging
 
         let response = await dishesApiService.updateProduct(data);
         return res.status(200).json({
@@ -154,7 +154,7 @@ const createFuncType = async (req, res) => {
     try {
         //validate
         let data = await dishesApiService.createNewType(req.body);
-        console.log('control data', data)
+        // console.log('control data', data)
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC, // error code

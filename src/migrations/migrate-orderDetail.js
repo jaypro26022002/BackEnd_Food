@@ -14,6 +14,9 @@ module.exports = {
       id_product: {
         type: Sequelize.INTEGER
       },
+      nameProduct: {
+        type: Sequelize.STRING
+      },
       id_ship: {
         type: Sequelize.INTEGER
       },
@@ -21,10 +24,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       quantity: {
         type: Sequelize.INTEGER
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'Pending Payment'
       },
       createdAt: {
         allowNull: false,

@@ -1,6 +1,6 @@
 import db from "../models";
 
-const createOrder = async ({ items, total, paymentMethod, username, email, phone, district, orderId, status }) => {
+const createOrder = async ({ items, total, paymentMethod, username, email, phone, district }) => {
     const transaction = await db.sequelize.transaction();
 
     try {
@@ -8,13 +8,11 @@ const createOrder = async ({ items, total, paymentMethod, username, email, phone
 
         const order = await db.Order.create(
             {
-                total: parseFloat(total),
+                total: parseFloat(total), // Ensure that total is a float
                 paymentMethod,
                 username,
                 email,
-                phone,
-                orderId,
-                status: status || 'Pending Payment', // Default to 'Pending Payment' if not provided
+                phone // Ensure phone is passed correctly
             },
             { transaction }
         );
@@ -23,7 +21,6 @@ const createOrder = async ({ items, total, paymentMethod, username, email, phone
             throw new Error('Order creation failed');
         }
 
-        console.log('Order created with ID:', order.id_order);
 
         for (const item of items) {
             await db.OrderDetail.create(
@@ -32,9 +29,7 @@ const createOrder = async ({ items, total, paymentMethod, username, email, phone
                     id_product: item.id_product,
                     quantity: item.quantity,
                     price: item.price,
-                    nameProduct: item.nameProduct, // Include nameProduct
-                    district,
-                    status: 'Pending Payment' // Set initial status to 'Pending Payment'
+                    district
                 },
                 { transaction }
             );
@@ -64,127 +59,33 @@ module.exports = {
     createOrder,
 };
 
-
-// const createOrder = async ({ items, total, paymentMethod, username, email, phone, district, orderId }) => {
-//     const transaction = await db.sequelize.transaction();
-
+// const updateOrderStatus = async (username, status) => {
 //     try {
-//         console.log('Starting order creation...');
-
-//         const order = await db.Order.create(
-//             {
-//                 total: parseFloat(total), // Ensure that total is a float
-//                 paymentMethod,
-//                 username,
-//                 email,
-//                 phone, // Ensure phone is passed correctly
-//                 orderId // Store the orderId received from MoMo
-//             },
-//             { transaction }
-//         );
-
-//         if (!order || !order.id_order) {
-//             throw new Error('Order creation failed');
+//         const order = await db.Order.findOne({ where: { username } });
+//         if (!order) {
+//             throw new Error('Order not found');
 //         }
-
-//         console.log('Order created with ID:', order.id_order);
-
-//         for (const item of items) {
-//             await db.OrderDetail.create(
-//                 {
-//                     id_order: order.id_order,
-//                     id_product: item.id_product,
-//                     quantity: item.quantity,
-//                     price: item.price,
-//                     district
-//                 },
-//                 { transaction }
-//             );
-//         }
-
-//         await transaction.commit();
-
-//         console.log('Order and order details successfully created');
-
+//         order.status = status;
+//         await order.save();
 //         return {
-//             EM: 'Order created successfully',
+//             EM: 'Order status updated successfully',
 //             EC: 0,
 //             DT: order,
 //         };
-//     } catch (e) {
-//         await transaction.rollback();
-//         console.error("Error in createOrder:", e.message);
+//     } catch (error) {
+//         console.error('Error updating order status:', error.message);
 //         return {
-//             EM: 'Error from server',
+//             EM: 'Error updating order status',
 //             EC: -1,
 //             DT: '',
 //         };
 //     }
 // };
+
 
 // module.exports = {
-//     createOrder,
+//     createOrder, updateOrderStatus
 // };
-
-
-// const createOrder = async ({ items, total, paymentMethod, username, email, phone, district }) => {
-//     const transaction = await db.sequelize.transaction();
-
-//     try {
-//         console.log('Starting order creation...');
-
-//         const order = await db.Order.create(
-//             {
-//                 total: parseFloat(total), // Ensure that total is a float
-//                 paymentMethod,
-//                 username,
-//                 email,
-//                 phone // Ensure phone is passed correctly
-//             },
-//             { transaction }
-//         );
-
-//         if (!order || !order.id_order) {
-//             throw new Error('Order creation failed');
-//         }
-
-//         console.log('Order created with ID:', order.id_order);
-
-//         for (const item of items) {
-//             await db.OrderDetail.create(
-//                 {
-//                     id_order: order.id_order,
-//                     id_product: item.id_product,
-//                     quantity: item.quantity,
-//                     price: item.price,
-//                     district
-//                 },
-//                 { transaction }
-//             );
-//         }
-
-//         await transaction.commit();
-
-//         console.log('Order and order details successfully created');
-
-//         return {
-//             EM: 'Order created successfully',
-//             EC: 0,
-//             DT: order,
-//         };
-//     } catch (e) {
-//         await transaction.rollback();
-//         console.error("Error in createOrder:", e.message);
-//         return {
-//             EM: 'Error from server',
-//             EC: -1,
-//             DT: '',
-//         };
-//     }
-// };
-
-
-
 
 
 // import db from "../models";
