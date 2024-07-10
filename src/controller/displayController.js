@@ -1,5 +1,61 @@
 import displayService from '../service/displayService'
 
+const readFuncUserOrder = async (req, res) => {
+    try {
+        const { username } = req.query;
+        // console.log('Received username:', username);
+        let data = await displayService.getUserOrder(username);
+        // console.log('Service response:', data);
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT,
+        });
+    } catch (e) {
+        console.error('Error in readFuncUserOrder:', e);
+        return res.status(500).json({
+            EM: 'error from server displayController',
+            EC: '-1',
+            DT: ''
+        });
+    }
+};
+
+const readFuncCheckDoanhThuDetail = async (req, res) => {
+    try {
+        let data = await displayService.getCheckDoanhThuDetail();
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            EM: 'error from server displayController',
+            EC: '-1',
+            DT: ''
+        });
+    }
+};
+const readFuncCheckDoanhThu = async (req, res) => {
+    try {
+        let data = await displayService.getCheckDoanhThu();
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            EM: 'error from server displayController',
+            EC: '-1',
+            DT: ''
+        });
+    }
+};
+
 const readOrderDetailsByOrderId = async (req, res) => {
     try {
         let orderId = req.query.orderId;
@@ -190,6 +246,8 @@ let getfunProducttoi = async (req, res) => {
 module.exports = {
     getfuncProduct1, getfunProductkfc, getfunProductcom, getfunProductsushi, getfunProductbun,
     getfunProductsang, getfunProducttrua, getfunProducttoi,
-    readFuncCheckOrder, readOrderDetailsByOrderId
+    readFuncCheckOrder, readOrderDetailsByOrderId,
+    readFuncCheckDoanhThu, readFuncCheckDoanhThuDetail,
+    readFuncUserOrder
 }
 

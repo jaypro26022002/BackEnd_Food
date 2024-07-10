@@ -2,6 +2,87 @@ import db from "../models";
 // Op là một object chứa các toán tử so sánh như Op.in, Op.eq, Op.gt,... để bạn có thể sử dụng trong các truy vấn Sequelize.
 const { Op } = require('sequelize');
 
+const getUserOrder = async (username) => {
+    try {
+        console.log('Username received in service:', username);
+        let data = await db.Order.findAll({
+            where: {
+                status: {
+                    [Op.in]: ['Đã thanh toán']
+                },
+                username: username // Filter by username
+            },
+            attributes: ["id_order", "total", 'paymentMethod', "username", "email", "phone", "status", "orderId", "createdAt"],
+            raw: true,
+        });
+        // console.log('Fetched user orders:', data);
+        return {
+            EM: 'fetch user order ok',
+            EC: 0,
+            DT: data
+        };
+    } catch (e) {
+        console.error('Error in getUserOrder:', e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+
+
+const getCheckDoanhThuDetail = async () => {
+    try {
+        let data = await db.OrderDetail.findAll({
+            where: {
+                status: {
+                    [Op.in]: ['Đã thanh toán']
+                }
+            },
+            attributes: ["id_orderdetail", "id_order", "nameProduct", "district", "price", "quantity", "status", "createdAt"],
+        });
+        return {
+            EM: 'fetch check doanh thu details ok',
+            EC: 0,
+            DT: data
+        };
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+
+const getCheckDoanhThu = async () => {
+    try {
+        let data = await db.Order.findAll({
+            where: {
+                status: {
+                    [Op.in]: ['Đã thanh toán']
+                }
+            },
+            attributes: ["id_order", "total", 'paymentMethod', "username", "email", "phone",
+                "status", "orderId", "createdAt"],
+        });
+        return {
+            EM: 'fetch check doanh thu ok',
+            EC: 0,
+            DT: data
+        };
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+
 const getOrderDetailsByOrderId = async (orderId) => {
     try {
         let data = await db.OrderDetail.findAll({
@@ -253,6 +334,7 @@ const getProducttoi = async () => {
 module.exports = {
     getProduct, getProductkfc, getProductcom, getProductsushi, getProductbun,
     getProductsang, getProducttrua, getProducttoi,
-    getCheckOrderwithPagination, getOrderDetailsByOrderId
-
+    getCheckOrderwithPagination, getOrderDetailsByOrderId,
+    getCheckDoanhThu, getCheckDoanhThuDetail,
+    getUserOrder
 }

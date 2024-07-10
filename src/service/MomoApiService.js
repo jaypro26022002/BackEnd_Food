@@ -6,7 +6,7 @@ const accessKey = 'F8BBA842ECF85';
 const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
 
 const redirectUrl = 'http://localhost:3000/checkbill';
-const ipnUrl = 'https://f2a6-42-112-181-96.ngrok-free.app/callback';
+const ipnUrl = 'https://a0aa-2405-4803-c777-af60-2922-264d-b222-cf69.ngrok-free.app/callback';
 const requestType = "payWithATM"; // Ensure this matches the expected value by MoMo
 
 const createPayment = ({ items, total, paymentMethod, username, email, phone, district }) => {
@@ -15,7 +15,7 @@ const createPayment = ({ items, total, paymentMethod, username, email, phone, di
         const amount = Math.round(total * 1000).toString(); // Amount in VND
         const orderId = partnerCode + new Date().getTime();
         const requestId = orderId;
-        const extraData = '';
+        const extraData = JSON.stringify(items); // Include items as extraData
 
         // Generate the signature
         const rawSignature = `accessKey=${accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${ipnUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${partnerCode}&redirectUrl=${redirectUrl}&requestId=${requestId}&requestType=${requestType}`;
@@ -35,12 +35,7 @@ const createPayment = ({ items, total, paymentMethod, username, email, phone, di
             lang: 'vi',
             requestType,
             extraData,
-            itemName: items.map(item => item.name).join(', '),
-            username,
-            email,
-            phone,
-            district,
-            signature // Include the generated signature
+            signature
         });
 
         const options = {
@@ -62,7 +57,6 @@ const createPayment = ({ items, total, paymentMethod, username, email, phone, di
             res.on('end', () => {
                 try {
                     const response = JSON.parse(body);
-
                     console.log('MoMo Response:', response);
 
                     if (response.resultCode === 0) {
@@ -87,10 +81,103 @@ const createPayment = ({ items, total, paymentMethod, username, email, phone, di
         req.end();
     });
 };
-
 export default {
     createPayment
 };
+
+// import https from 'https';
+// import crypto from 'crypto';
+
+// const partnerCode = 'MOMO';
+// const accessKey = 'F8BBA842ECF85';
+// const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
+
+// const redirectUrl = 'http://localhost:3000/checkbill';
+// const ipnUrl = 'https://0281-42-112-244-6.ngrok-free.app/callback';
+// const requestType = "payWithATM"; // Ensure this matches the expected value by MoMo
+
+// const createPayment = ({ items, total, paymentMethod, username, email, phone, district }) => {
+//     return new Promise((resolve, reject) => {
+//         const orderInfo = 'Thanh toán qua MoMo';
+//         const amount = Math.round(total * 1000).toString(); // Amount in VND
+//         const orderId = partnerCode + new Date().getTime();
+//         const requestId = orderId;
+//         const extraData = '';
+
+//         // Generate the signature
+//         const rawSignature = `accessKey=${accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${ipnUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${partnerCode}&redirectUrl=${redirectUrl}&requestId=${requestId}&requestType=${requestType}`;
+//         const signature = crypto.createHmac('sha256', secretKey).update(rawSignature).digest('hex');
+
+//         // Create the request body
+//         const requestBody = JSON.stringify({
+//             partnerCode,
+//             partnerName: "Test",
+//             storeId: "MomoTestStore",
+//             requestId,
+//             amount,
+//             orderId,
+//             orderInfo,
+//             redirectUrl,
+//             ipnUrl,
+//             lang: 'vi',
+//             requestType,
+//             extraData,
+//             itemName: items.map(item => item.name).join(', '),
+//             username,
+//             email,
+//             phone,
+//             district,
+//             signature // Include the generated signature
+//         });
+
+//         const options = {
+//             hostname: 'test-payment.momo.vn',
+//             path: '/v2/gateway/api/create',
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Content-Length': Buffer.byteLength(requestBody)
+//             }
+//         };
+
+//         const req = https.request(options, res => {
+//             res.setEncoding('utf8');
+//             let body = '';
+//             res.on('data', chunk => {
+//                 body += chunk;
+//             });
+//             res.on('end', () => {
+//                 try {
+//                     const response = JSON.parse(body);
+
+//                     console.log('MoMo Response:', response);
+
+//                     if (response.resultCode === 0) {
+//                         resolve({ payUrl: response.payUrl, orderId });
+//                     } else {
+//                         console.error(`Error from MoMo: ${response.localMessage}, resultCode: ${response.resultCode}, response: ${body}`);
+//                         reject(new Error(`Error from MoMo: ${response.localMessage}`));
+//                     }
+//                 } catch (e) {
+//                     console.error('Failed to parse MoMo response', e, body);
+//                     reject(new Error('Failed to parse MoMo response'));
+//                 }
+//             });
+//         });
+
+//         req.on('error', (e) => {
+//             console.error('Request error:', e);
+//             reject(e);
+//         });
+
+//         req.write(requestBody);
+//         req.end();
+//     });
+// };
+
+// export default {
+//     createPayment
+// };
 
 // import https from 'https';
 // import crypto from 'crypto';

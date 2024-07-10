@@ -1,5 +1,4 @@
 import dishesApiService from '../service/dishesApiService'
-import ordersService from '../service/dishesApiService'; // Create this service
 import multer from 'multer';
 
 
@@ -110,7 +109,7 @@ const updateFuncProduct = async (req, res) => {
 
 const deleteFuncProduct = async (req, res) => {
     try {
-        let data = await dishesApiService.deleteUser(req.body.id);
+        let data = await dishesApiService.deleteProduct(req.body.id_product);
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC, // error code
@@ -209,8 +208,6 @@ const updateFuncType = async (req, res) => {
 // }
 
 // ordersController.js
-
-
 
 
 module.exports = {

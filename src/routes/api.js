@@ -83,14 +83,17 @@ const initApiRoutes = (app) => {
 
     router.get('/adminorder/read', displayController.readFuncCheckOrder);
     router.get('/adminorderdetail/read', displayController.readOrderDetailsByOrderId);
+    router.get('/adminorder/checkdoanhthu', displayController.readFuncCheckDoanhThu);
+    router.get('/adminorder/checkdoanhthuDetail', displayController.readFuncCheckDoanhThuDetail);
 
+    router.get('/userorder/checkdoanhthu', displayController.readFuncUserOrder);
 
     router.get('/group/read', groupController.readFunc);
 
     router.get('/product/read', dishesController.readFuncProduct);
     router.post('/product/create', upload.single('image'), dishesController.createFuncProduct);
     router.put('/product/update', upload.single('image'), dishesController.updateFuncProduct);
-    router.delete('/user/delete', dishesController.deleteFuncProduct);
+    router.delete('/product/delete', dishesController.deleteFuncProduct);
 
     router.get("/getimg", homeController.getUploadFilePage)
     router.post('/upload-image', upload.single('image'), homeController.handleUploadFile)
@@ -126,30 +129,6 @@ const initApiRoutes = (app) => {
 
     router.post('/orders', orderController.createFuncOrder);
     router.post('/momo/payment', orderController.createMoMoPayment);
-
-    // app.post('/callback', orderController.createFuncUpdateOrder);
-
-
-
-    // app.post('/callback', async (req, res) => {
-    //     try {
-    //         console.log("Callback request body:", req.body);
-
-    //         // Call createFuncUpdateOrder from orderController
-    //         let datacallback = await orderController.createFuncUpdateOrder(req, res);
-
-    //         // Respond with success status and data from createFuncUpdateOrder
-    //         res.status(200).json({
-    //             message: 'Callback processed successfully',
-    //             data: datacallback
-    //         });
-    //     } catch (error) {
-    //         console.error('Error processing callback:', error);
-    //         res.status(500).send('Internal Server Error');
-    //     }
-    // });
-
-
     app.post('/callback', async (req, res) => {
         try {
             console.log("Callback request body:", req.body);
@@ -200,50 +179,6 @@ const initApiRoutes = (app) => {
             });
         }
     });
-
-
-    // app.post('/callback', async (req, res) => {
-    //     try {
-    //         console.log("Callback request body:", req.body);
-    //         let data = req.body; // Assuming MoMo sends data as part of request body
-    //         console.log('MoMo callback data:', data);
-
-    //         // Find order in database based on orderId from MoMo
-    //         const updateOrder = await db.Order.findOne({
-    //             where: { orderId: data.orderId }
-    //         });
-
-    //         if (updateOrder) {
-    //             // Update product details based on resultCode condition
-    //             if (data.resultCode === 0) {
-    //                 updateOrder.status = 'Đã thanh toán'; // Update status to 'Đã thanh toán' if resultCode is 0
-    //             }
-    //             // Else condition: If resultCode !== 0, keep the existing status and orderId
-
-    //             await updateOrder.save();
-
-    //             res.json({
-    //                 EM: 'Update Order success',
-    //                 EC: 0,
-    //                 DT: ''
-    //             });
-    //         } else {
-    //             res.status(404).json({
-    //                 EM: 'Order not found',
-    //                 EC: 2,
-    //                 DT: ''
-    //             });
-    //         }
-    //     } catch (e) {
-    //         console.error("Error in updateOrder:", e);
-    //         res.status(500).json({
-    //             EM: 'Something went wrong with the server',
-    //             EC: 1,
-    //             DT: []
-    //         });
-    //     }
-    // });
-
     router.post('/check-status-transaction', async (req, res) => {
         try {
             const { orderId } = req.body;
@@ -292,11 +227,3 @@ const initApiRoutes = (app) => {
 }
 
 export default initApiRoutes;
-
-
-// router.post('/callback', async (req, res) => {
-//     console.log("callback: ");
-//     console.log(req.body);
-
-//     return res.status(200).json(req.body)
-// })

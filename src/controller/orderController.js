@@ -20,6 +20,8 @@ const createFuncOrder = async (req, res) => {
     }
 };
 
+// orderController.js
+
 const createMoMoPayment = async (req, res) => {
     try {
         const { items, paymentMethod, username, email, phone, district } = req.body;
@@ -37,12 +39,36 @@ const createMoMoPayment = async (req, res) => {
         const { payUrl, orderId } = await momoService.createPayment({ items, total, paymentMethod, username, email, phone, district });
 
         let data = await ordersService.createOrder({ items, total, paymentMethod, username, email, phone, district, orderId, status: 'Pending Payment' });
-        res.status(200).json({ paymentUrl: payUrl });
+        res.status(200).json({ paymentUrl: payUrl, orderId, items }); // Include items in the response
     } catch (error) {
         console.error('Error placing order:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+// const createMoMoPayment = async (req, res) => {
+//     try {
+//         const { items, paymentMethod, username, email, phone, district } = req.body;
+
+//         if (!items || items.length === 0) {
+//             return res.status(400).json({ error: 'No items provided' });
+//         }
+
+//         const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+//         if (isNaN(total)) {
+//             return res.status(400).json({ error: 'Invalid total amount' });
+//         }
+
+//         const { payUrl, orderId } = await momoService.createPayment({ items, total, paymentMethod, username, email, phone, district });
+
+//         let data = await ordersService.createOrder({ items, total, paymentMethod, username, email, phone, district, orderId, status: 'Pending Payment' });
+//         res.status(200).json({ paymentUrl: payUrl });
+//     } catch (error) {
+//         console.error('Error placing order:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// };
 
 // const createFuncOrder = async (req, res) => {
 //     try {

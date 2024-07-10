@@ -59,7 +59,7 @@ const resgisterNewUser = async (rawUserData) => {
             username: rawUserData.username,
             phone: rawUserData.phone,
             password: hashPassword,
-            groupId: 4
+            groupId: 2
         })
 
         return {
