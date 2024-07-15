@@ -45,6 +45,20 @@ const imageFilter = function (req, file, cb) {
 let upload = multer({ storage: storage, fileFilter: imageFilter });
 
 
+// imagine
+router.get("/getimg", homeController.getUploadFilePage)
+router.post('/upload-image', upload.single('image'), homeController.handleUploadFile)
+
+router.get('/shop1/:shopId/comments', displayController.getComments); // Add this line
+router.get('/shop2/:shopId/comments', displayController.getComments); // Add this line
+router.get('/shop3/:shopId/comments', displayController.getComments); // Add this line
+router.get('/shop4/:shopId/comments', displayController.getComments); // Add this line
+router.post('/create/contact', OtherController.handleContact);
+
+router.get('/product/readevent', displayController.getfuncProductEvent);
+
+
+
 const initApiRoutes = (app) => {
 
     //rest api 
@@ -52,16 +66,6 @@ const initApiRoutes = (app) => {
     // test upload file
     router.get("/getimg", homeController.getUploadFilePage)
     router.post('/upload-image', upload.single('image'), homeController.handleUploadFile)
-
-    // display
-
-    router.get('/product/readsushi', displayController.getfunProductsushi);
-    router.get('/product/readbun', displayController.getfunProductbun);
-    router.get('/product/readsang', displayController.getfunProductsang);
-    router.get('/product/readtrua', displayController.getfunProducttrua);
-    router.get('/product/readtoi', displayController.getfunProducttoi);
-    router.post('/contact', OtherController.handleContact);
-
 
     // router.all : sẽ check user quyền các role(/user/read, /group/read, ...)-> so sánh url trên Database mới cho chạy đống code dưới
     // qua 2 midleware(checkUserJWT, checkUserPermision)
@@ -72,60 +76,65 @@ const initApiRoutes = (app) => {
 
     router.get('/account', userController.getUserAccount);
 
-    router.get('/product/read1', displayController.getfuncProduct1);
+    // guest
+    router.get('/product/readsang', displayController.getfunProductsang);
+    router.get('/product/readtrua', displayController.getfunProducttrua);
+    router.get('/product/readtoi', displayController.getfunProducttoi);
+    router.get('/product/readsushi', displayController.getfunProductsushi);
+    router.get('/product/readbun', displayController.getfunProductbun);
     router.get('/product/readcom', displayController.getfunProductcom);
     router.get('/product/readkfc', displayController.getfunProductkfc);
+    router.get('/product/read1', displayController.getfuncProduct1);
 
+    //login
+
+    // admin
+    //--- user
     router.get('/user/read', userController.readFunc);
     router.post('/user/create', userController.createFunc);
     router.put('/user/update', userController.updateFunc);
     router.delete('/user/delete', userController.deleteFunc);
-
+    //--- adminOrder
     router.get('/adminorder/read', displayController.readFuncCheckOrder);
     router.get('/adminorderdetail/read', displayController.readOrderDetailsByOrderId);
     router.get('/adminorder/checkdoanhthu', displayController.readFuncCheckDoanhThu);
     router.get('/adminorder/checkdoanhthuDetail', displayController.readFuncCheckDoanhThuDetail);
-
+    //--- doanh thu
     router.get('/userorder/checkdoanhthu', displayController.readFuncUserOrder);
-
+    //--- group
     router.get('/group/read', groupController.readFunc);
-
+    //--- product
     router.get('/product/read', dishesController.readFuncProduct);
     router.post('/product/create', upload.single('image'), dishesController.createFuncProduct);
     router.put('/product/update', upload.single('image'), dishesController.updateFuncProduct);
-    router.delete('/product/delete', dishesController.deleteFuncProduct);
-
-    router.get("/getimg", homeController.getUploadFilePage)
-    router.post('/upload-image', upload.single('image'), homeController.handleUploadFile)
-
-    // router.get('/type/read', dishesController.readFuncProduct);
-    // router.post('/type/create', dishesController.createFuncProduct);
-    // router.put('/type/update', dishesController.updateFuncProduct);
-
-    // router.get('/new/read', OtherController.readFuncNew);
-    // router.post('/new/create', OtherController.createFuncNew);
-    // router.put('/new/update', OtherController.updateFuncNew);
-
+    router.delete(' ', dishesController.deleteFuncProduct);
+    //--- Contact
     router.get('/feedback/readContact', OtherController.readFuncContact);
+    //--- shop
+    router.get('/shop/read', OtherController.readFuncShop);
+    router.post('/shop/create', upload.single('image'), OtherController.createFuncShop);
+    router.put('/shop/update', upload.single('image'), OtherController.updateFuncShop);
+    router.delete('/shop/delete', OtherController.deleteFuncShop);
+
+
+    // Login
+
+    // router.get('/product/readevent', displayController.getfuncProductenvent);
+    // router.get('/shopALl/readContactshop', displayController.getfuncGetAllContact);
+    router.get('/shop1/readContactshop', displayController.getfuncGetContact1);
+
+
+    // cửa hàng 
     router.get('/shop/readShop', OtherController.readFuncShopWeb);
     router.get('/shop/readShop2', OtherController.readFuncShopWeb2);
     router.get('/shop/readShop3', OtherController.readFuncShopWeb3);
     router.get('/shop/readShop4', OtherController.readFuncShopWeb4);
 
 
-    router.get('/shop/read', OtherController.readFuncShop);
-    // router.get('/type1/read', groupController.readFuncT);
-    router.post('/shop/create', upload.single('image'), OtherController.createFuncShop);
-    router.put('/shop/update', upload.single('image'), OtherController.updateFuncShop);
-    router.delete('/shop/delete', OtherController.deleteFuncShop);
-
 
     // test upload file
     // router.get("/upload", homeController.getUploadFilePage)
     // router.post('/upload-profile-pic', upload.single('profile_pic'), homeController.handleUploadFile)
-
-    // router.post('/orders', createOrderController.createFuncOrderDetail);
-    // router.post('/momo/payment', createOrderController.createMoMoPayment);
 
     router.post('/orders', orderController.createFuncOrder);
     router.post('/momo/payment', orderController.createMoMoPayment);

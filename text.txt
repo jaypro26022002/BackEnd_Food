@@ -26,4 +26,10 @@ Executing (default): INSERT INTO `Product` (`id_product`,`nameProduct`,`thumbnai
 
  15: đi in 
 
+
+ sour
+ báo cáo 
+ pdf,word
+ quay phim chèn vietsub
+
  

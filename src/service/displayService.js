@@ -1,6 +1,50 @@
+import { where } from "sequelize/lib/sequelize";
 import db from "../models";
 // Op là một object chứa các toán tử so sánh như Op.in, Op.eq, Op.gt,... để bạn có thể sử dụng trong các truy vấn Sequelize.
 const { Op } = require('sequelize');
+
+const getContact1 = async () => {
+    try {
+        const data = await db.Contact.findAll({
+            attributes: ["id_contact", "nameUser", "description", "createdAt"],
+            raw: true,
+        });
+        return {
+            EM: 'Fetch contacts successful',
+            EC: 0,
+            DT: data
+        };
+    } catch (e) {
+        console.error('Error in getContact1:', e);
+        return {
+            EM: 'Server error',
+            EC: 1,
+            DT: []
+        };
+    }
+};
+
+const getCommentsByShopId = async (shopId) => {
+    try {
+        let data = await db.Contact.findAll({
+            where: { id_shop: shopId },
+            attributes: ["id_contact", "nameUser", "description", "createdAt"],
+            raw: true,
+        });
+        return {
+            EM: 'fetch comments ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+};
 
 const getUserOrder = async (username) => {
     try {
@@ -30,7 +74,6 @@ const getUserOrder = async (username) => {
         };
     }
 };
-
 
 const getCheckDoanhThuDetail = async () => {
     try {
@@ -105,7 +148,6 @@ const getOrderDetailsByOrderId = async (orderId) => {
     }
 };
 
-
 const getCheckOrderwithPagination = async (page, limit) => {
     try {
         let offset = (page - 1) * limit;
@@ -146,11 +188,37 @@ const getCheckOrderwithPagination = async (page, limit) => {
     }
 };
 
-
-const getProduct = async () => {
+const getProduct1 = async () => {
     try {
         let data = await db.Product.findAll({
-            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings"],
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings", "id_type_product"],
+            where: {
+                // id_type_product: 5
+            },
+            raw: true,
+        });
+        return {
+            EM: 'fetch product ok',
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            EM: 'something wrong with server',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
+const getProductEvent = async () => {
+    try {
+        let data = await db.Product.findAll({
+            attributes: ["id_product", "nameProduct", "thumbnail", "pricedown", "price", "quantity", "collection", "fastDelivery", "ratings", "id_type_product"],
+            where: {
+                collection: 5
+            },
             raw: true,
         });
         return {
@@ -332,9 +400,10 @@ const getProducttoi = async () => {
 
 
 module.exports = {
-    getProduct, getProductkfc, getProductcom, getProductsushi, getProductbun,
+    getProduct1, getProductkfc, getProductcom, getProductsushi, getProductbun,
     getProductsang, getProducttrua, getProducttoi,
     getCheckOrderwithPagination, getOrderDetailsByOrderId,
     getCheckDoanhThu, getCheckDoanhThuDetail,
-    getUserOrder
+    getUserOrder, getProductEvent,
+    getCommentsByShopId, getContact1
 }

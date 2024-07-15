@@ -93,7 +93,6 @@ const getShopWeb4 = async () => {
     }
 }
 
-
 const getContact = async () => {
     try {
         let data = await db.Contact.findAll({
@@ -117,24 +116,23 @@ const getContact = async () => {
 
 const createNewContact = async (data) => {
     try {
-        // create new user
         await db.Contact.create({
             nameUser: data.nameUser,
-            description: data.description
-        })
-        // console.log(">> check dataOther: ", data)
+            description: data.description,
+            id_shop: data.id_shop,
+        });
         return {
             EM: 'Create contact ok',
             EC: 0,
             DT: []
-        }
+        };
     } catch (e) {
         console.log(e);
         return {
             EM: 'Error from Otherserver',
             EC: -1,
             DT: []
-        }
+        };
     }
 };
 

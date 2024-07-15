@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     nameUser: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    id_shop: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Contact',

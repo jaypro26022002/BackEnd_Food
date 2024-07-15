@@ -1,5 +1,42 @@
 import displayService from '../service/displayService'
 
+const getfuncGetContact1 = async (req, res) => {
+    try {
+        const data = await displayService.getContact1();
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT
+        });
+    } catch (e) {
+        console.error('Error in getfuncGetContact1:', e);
+        return res.status(500).json({
+            EM: 'Server error',
+            EC: '-1',
+            DT: []
+        });
+    }
+};
+
+let getComments = async (req, res) => {
+    try {
+        let shopId = req.params.shopId;
+        let data = await displayService.getCommentsByShopId(shopId);
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            EM: 'error from server',
+            EC: '-1',
+            DT: ''
+        });
+    }
+};
+
 const readFuncUserOrder = async (req, res) => {
     try {
         const { username } = req.query;
@@ -101,7 +138,25 @@ const readFuncCheckOrder = async (req, res) => {
 
 let getfuncProduct1 = async (req, res) => {
     try {
-        let data = await displayService.getProduct();
+        let data = await displayService.getProduct1();
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC, // error code
+            DT: data.DT, //data
+        })
+
+    } catch (e) {
+        console.log(e);
+        return res(500).json({
+            EM: 'error from server userController',// error messeger
+            EC: '-1', // error code
+            DT: '' //data
+        })
+    }
+}
+let getfuncProductEvent = async (req, res) => {
+    try {
+        let data = await displayService.getProductEvent();
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC, // error code
@@ -248,6 +303,8 @@ module.exports = {
     getfunProductsang, getfunProducttrua, getfunProducttoi,
     readFuncCheckOrder, readOrderDetailsByOrderId,
     readFuncCheckDoanhThu, readFuncCheckDoanhThuDetail,
-    readFuncUserOrder
+    readFuncUserOrder,
+    getfuncProductEvent,
+    getComments, getfuncGetContact1
 }
 

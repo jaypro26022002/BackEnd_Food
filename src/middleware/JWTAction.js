@@ -7,8 +7,15 @@ import jwt from "jsonwebtoken";
 
 const nonSecurePaths = ['/logout', '/login', '/register',
     '/cart', '/carts',
-    '/product/read1', '/product/readcom', '/product/readkfc', '/shop/readShop',
+    '/sang',
+    '/shop/readShop', '/shop/readShop2', '/shop/readShop3', '/shop/readShop4',
+    '/product/read1', '/shop/readShop',
+    '/product/readsang', '/product/readtrua', '/product/readtoi',
+    '/product/readsushi', '/product/readbun', '/product/readcom',
+    '/product/readkfc',
     '/shop/readShop2', '/shop/readShop3', '/shop/readShop4',
+    '/shop1/:shopId/comments', '/shop1/readContactshop',
+    '/create/contact', '/Allshop/comments'
 ];
 
 // createJWT gữi liệu kèm mã hóa nội dung đã gửi để bảo mật thông tin
