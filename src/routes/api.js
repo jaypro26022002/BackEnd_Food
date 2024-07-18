@@ -53,7 +53,6 @@ router.get('/shop1/:shopId/comments', displayController.getComments); // Add thi
 router.get('/shop2/:shopId/comments', displayController.getComments); // Add this line
 router.get('/shop3/:shopId/comments', displayController.getComments); // Add this line
 router.get('/shop4/:shopId/comments', displayController.getComments); // Add this line
-router.post('/create/contact', OtherController.handleContact);
 
 router.get('/product/readevent', displayController.getfuncProductEvent);
 
@@ -86,10 +85,16 @@ const initApiRoutes = (app) => {
     router.get('/product/readkfc', displayController.getfunProductkfc);
     router.get('/product/read1', displayController.getfuncProduct1);
 
+    // cửa hàng 
+    router.get('/shop/readShop', OtherController.readFuncShopWeb);
+    router.get('/shop/readShop2', OtherController.readFuncShopWeb2);
+    router.get('/shop/readShop3', OtherController.readFuncShopWeb3);
+    router.get('/shop/readShop4', OtherController.readFuncShopWeb4);
+
     //login
 
-    // admin
-    //--- user
+    // 
+    //nhan vien/admin
     router.get('/user/read', userController.readFunc);
     router.post('/user/create', userController.createFunc);
     router.put('/user/update', userController.updateFunc);
@@ -99,17 +104,18 @@ const initApiRoutes = (app) => {
     router.get('/adminorderdetail/read', displayController.readOrderDetailsByOrderId);
     router.get('/adminorder/checkdoanhthu', displayController.readFuncCheckDoanhThu);
     router.get('/adminorder/checkdoanhthuDetail', displayController.readFuncCheckDoanhThuDetail);
-    //--- doanh thu
-    router.get('/userorder/checkdoanhthu', displayController.readFuncUserOrder);
+
     //--- group
     router.get('/group/read', groupController.readFunc);
     //--- product
     router.get('/product/read', dishesController.readFuncProduct);
     router.post('/product/create', upload.single('image'), dishesController.createFuncProduct);
     router.put('/product/update', upload.single('image'), dishesController.updateFuncProduct);
-    router.delete(' ', dishesController.deleteFuncProduct);
+    router.delete('/product/delete', dishesController.deleteFuncProduct);
     //--- Contact
     router.get('/feedback/readContact', OtherController.readFuncContact);
+    router.post('/create/contact', OtherController.handleContact);
+
     //--- shop
     router.get('/shop/read', OtherController.readFuncShop);
     router.post('/shop/create', upload.single('image'), OtherController.createFuncShop);
@@ -120,15 +126,12 @@ const initApiRoutes = (app) => {
     // Login
 
     // router.get('/product/readevent', displayController.getfuncProductenvent);
-    // router.get('/shopALl/readContactshop', displayController.getfuncGetAllContact);
     router.get('/shop1/readContactshop', displayController.getfuncGetContact1);
 
+    //--- doanh thu
+    router.get('/userorder/checkdoanhthu', displayController.readFuncUserOrder);
 
-    // cửa hàng 
-    router.get('/shop/readShop', OtherController.readFuncShopWeb);
-    router.get('/shop/readShop2', OtherController.readFuncShopWeb2);
-    router.get('/shop/readShop3', OtherController.readFuncShopWeb3);
-    router.get('/shop/readShop4', OtherController.readFuncShopWeb4);
+
 
 
 

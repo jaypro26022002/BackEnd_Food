@@ -159,10 +159,10 @@ const updataUser = async (data) => {
     }
 }
 
-const deleteUser = async (id) => {
+const deleteUser = async (id_user) => {
     try {
         let user = await db.User.findOne({
-            where: { id: id }
+            where: { id_user: id_user }
         })
         if (user) {
             await user.destroy();

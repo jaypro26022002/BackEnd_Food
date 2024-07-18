@@ -115,11 +115,11 @@ const updateProduct = async (data) => {
 
 const deleteProduct = async (id_product) => {
     try {
-        let user = await db.Product.findOne({
+        let product = await db.Product.findOne({
             where: { id_product: id_product }
         })
-        if (user) {
-            await user.destroy();
+        if (product) {
+            await product.destroy();
             return {
                 EM: 'Delete successful',
                 EC: 0,
