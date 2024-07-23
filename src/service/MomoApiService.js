@@ -6,7 +6,7 @@ const accessKey = 'F8BBA842ECF85';
 const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
 
 const redirectUrl = 'http://localhost:3000/checkbill';
-const ipnUrl = 'https://cf92-42-115-92-53.ngrok-free.app/callback';
+const ipnUrl = 'https://77ba-1-53-235-133.ngrok-free.app/callback';
 const requestType = "payWithATM"; // Ensure this matches the expected value by MoMo
 
 const createPayment = ({ items, total, paymentMethod, username, email, phone, district }) => {

@@ -48,6 +48,10 @@ const createMoMoPayment = async (req, res) => {
     }
 };
 
+export default {
+    createFuncOrder,
+    createMoMoPayment,
+}
 // import ordersService from '../service/orderApiService';
 // import momoService from '../service/MomoApiService';
 
@@ -169,10 +173,7 @@ const createMoMoPayment = async (req, res) => {
 //         res.status(500).json({ error: 'Internal Server Error' });
 //     }
 // };
-export default {
-    createFuncOrder,
-    createMoMoPayment,
-}
+
 
 // const createMoMoPayment = async (req, res) => {
 //     try {

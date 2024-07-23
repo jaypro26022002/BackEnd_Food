@@ -1,0 +1,21 @@
+** Tải các phần mềm cần thiết
++ cài nodejs (v14.21.3)
+link tải nodeJS(https://nodejs.org/en/download/prebuilt-installer)
++ visualcode
++ mySql
+
+** khởi động 2file Reactjs(FrontEnd) và Node js(BackEnd)
+Ctrl + ` (mở terminal)
++ npm install(Tải folder node_modules về)
++ npm start 
+
+** thanh toán bên BackEnd
+Hướng dẫn tải: https://www.youtube.com/watch?v=gdfxoNfVxMU&t=2s
+Link tải: https://ngrok.com/
++ Window + R -> cmd
++ ngrok http 8081
++ copy nội dung của Forwarding: 
+-> https://68e2-2405-4803-db45-9950-a57f-484c-b612-6f33.ngrok-free.app(mã có thể thay đổi tùy ý bắt buộc tắt mở lại coppy mã khác khi không chạy được)
++ xong coppy vào file \DATN\BackEnd_Food\src\service\MomoApiService.js
+đoạn :const ipnUrl = 'https://cf92-42-115-92-53.ngrok-free.app/callback';
+(để lại \callback) chỉ thay thế đoạn trước 
